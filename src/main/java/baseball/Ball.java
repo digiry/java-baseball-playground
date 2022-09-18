@@ -1,5 +1,7 @@
 package baseball;
 
+import java.util.Objects;
+
 public class Ball {
     private int number;
     private int position;
@@ -10,14 +12,38 @@ public class Ball {
     }
 
     public BallStatus evaluate(Ball userBall) {
-        if (number == userBall.number && position == userBall.position) {
+        if (this.equals(userBall)) {
             return BallStatus.STRIKE;
         }
 
-        if (number == userBall.number) {
+        if (this.matchNumber(userBall)) {
             return BallStatus.BALL;
         }
-
         return BallStatus.NOTHING;
+    }
+
+    public boolean matchNumber(Ball userBall) {
+        if (number == userBall.number) {
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Ball ball = (Ball) o;
+        return number == ball.number && position == ball.position;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(number, position);
     }
 }
